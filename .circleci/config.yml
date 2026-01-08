@@ -36,12 +36,20 @@ jobs:
           scan-all-projects: true
           skip-unresolved: false
           run-on-non-main: true
+  reversing-labs:
+    docker:
+      - image: cimg/python:3.10
+    resource_class: large
+    steps:
+      - checkout
+      - platform-helpers-general/step-load-dependencies
+      - platform-helpers/step-reversinglabs-scan
 
 workflows:
   "Malware Scanner":
     jobs:
       - build
-      - platform-helpers/job-reversinglabs-scan:
+      - reversing-labs:
           context:
             - static-analysis
           requires:
