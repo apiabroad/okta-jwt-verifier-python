@@ -214,7 +214,6 @@ class BaseJWTVerifier():
         try:
             jwks = await self.request_executor.get(jwks_uri, headers=headers)
         except Exception as e: # This is needed if the http client fails
-            print('String e: '+ str(e))
             self.request_executor.cache.release_new_key(('GET', jwks_uri))
             self._clear_requests_cache()
 
