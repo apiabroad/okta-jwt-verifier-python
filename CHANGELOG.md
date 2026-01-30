@@ -1,5 +1,8 @@
 # OKTA JWT Verifier Changelog
 
+## v0.4.0
+- Added support to clear cache if http client fails
+
 ## v0.3.0
 - Updated version of aiohttp to 3.12.14
 
