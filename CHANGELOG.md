@@ -1,5 +1,9 @@
 # OKTA JWT Verifier Changelog
 
+## v0.5.1 (apiabroad fork)
+_apiabroad fork changes:_
+- `cryptography` is now a declared runtime dependency, via `PyJWT[crypto]`, so RS256 token verification works when the package is installed from the git tag. Previously `cryptography` was only a dev dependency, and services that did not pull it in some other way rejected every valid Okta token with "RS256 requires 'cryptography' to be installed."
+
 ## v0.5.0 (apiabroad fork)
 This release is upstream okta/okta-jwt-verifier-python v0.5.0 plus the apiabroad
 fix for event loop blocking in the async `RequestExecutor` (upstream PR #90, not yet merged upstream).
