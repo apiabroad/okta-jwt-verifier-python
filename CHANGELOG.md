@@ -1,5 +1,36 @@
 # OKTA JWT Verifier Changelog
 
+## v0.5.0 (apiabroad fork)
+This release is upstream okta/okta-jwt-verifier-python v0.5.0 plus the apiabroad
+fix for event loop blocking in the async `RequestExecutor` (upstream PR #90, not yet merged upstream).
+
+_apiabroad fork changes:_
+- Async `RequestExecutor.get()` throttles and backs off with `asyncio.sleep()` instead of `time.sleep()`, so it no longer blocks the event loop
+- Retries use a built-in loop with exponential backoff for both the async and sync paths; the `retry2` dependency is removed
+- `requests` is declared as a runtime dependency, because the sync HTTP path added upstream imports it
+
+_Upstream v0.5.0:_
+
+_New features:_
+- Add synchronous `verify_sync()` method to `AccessTokenVerifier` and `IDTokenVerifier` for non-async applications (e.g. Django, Flask)
+- Add sync verification methods to `BaseJWTVerifier`: `verify_access_token_sync()`, `verify_id_token_sync()`, `get_jwk_sync()`, `get_jwks_sync()`
+- Add sync HTTP support in `RequestExecutor`: `fire_request_sync()`, `get_sync()` using the `requests` library
+
+_Improvements:_
+- Extract shared validation logic into `_verify_token_common()` to reduce code duplication across verify methods
+- Simplify `_get_jwk_by_kid()` with early return pattern
+- Fix `get_jwks()` silently swallowing exceptions on HTTP failure (now re-raises after cleanup)
+- Ensure `clear_cache()` clears both async and sync caches
+- Add `try/finally` to request throttling to guarantee counter cleanup on exceptions
+
+_Code quality:_
+- Fix docstring typo: `"acess"` → `"access"`
+- Fix incorrect return type documentation: `str` → `dict` for JWK methods
+- Add RFC 7519, 7515, 7517 references to docstrings
+- Remove empty parentheses on classes with no base class (PEP 8)
+
+_Backward compatible:_ All existing async APIs remain unchanged. No breaking changes.
+
 ## v0.4.0
 - Added support to clear cache if http client fails
 
